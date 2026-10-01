@@ -12,17 +12,23 @@ export async function fetchCategories() {
 
 	return data.map((category) => {
 		if (typeof category === "string") {
-			return category;
+			return {
+				name: category,
+				slug: category.toLowerCase().trim().replace(/\s+/g, "-"),
+			};
 		}
 
-		return category.name;
+		return {
+			name: category.name ?? category.slug,
+			slug: category.slug ?? category.name.toLowerCase().trim().replace(/\s+/g, "-"),
+		};
 	});
 }
 
 
 
 
-export async function fetchProducts(endpoint) {
+export async function fetchProducts(endpoint = "?limit=30") {
 	try {
 		const response = await fetch("https://dummyjson.com/products" + endpoint);
 
