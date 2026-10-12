@@ -1,6 +1,6 @@
 import { lavProductCard } from "./product-card.js";
 
-export function lavProducts(products = []) {
+export function lavProducts(products = [], onProductClick = () => {}) {
 	const productsSection = document.createElement("section");
 	const title = document.createElement("h2");
 	const productsGrid = document.createElement("div");
@@ -20,7 +20,7 @@ export function lavProducts(products = []) {
 	}
 
 	products.forEach((product) => {
-		productsGrid.append(lavProductCard(product));
+		productsGrid.append(lavProductCard(product, onProductClick));
 	});
 
 	productsSection.append(productsGrid);

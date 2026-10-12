@@ -1,6 +1,3 @@
-
-
-
 export async function fetchCategories() {
 	const response = await fetch("https://dummyjson.com/products/categories");
 
@@ -23,25 +20,4 @@ export async function fetchCategories() {
 			slug: category.slug ?? category.name.toLowerCase().trim().replace(/\s+/g, "-"),
 		};
 	});
-}
-
-
-
-
-export async function fetchProducts(endpoint = "?limit=30") {
-	try {
-		const response = await fetch("https://dummyjson.com/products" + endpoint);
-
-		if (!response.ok) {
-			throw new Error(`Kunne ikke hente produkter: ${response.status}`);
-		}
-
-		const data = await response.json();
-
-		return data.products ?? data;
-	} catch (error) {
-		console.error("Der opstod en fejl ved hentning af produkter:", error);
-
-		return [];
-	}
 }

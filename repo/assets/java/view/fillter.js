@@ -1,25 +1,38 @@
-export function lavFillter() {
+export function lavFillter(onFilterChange = () => {}) {
 	const filterBox = document.createElement("section");
 	const titel = document.createElement("h2");
-	const tekst = document.createElement("p");
-	const knapper = document.createElement("div");
-	const filtre = ["Alle varer", "Tøj", "Sko"];
+	const filterControls = document.createElement("div");
+	const priceLabel = document.createElement("label");
+	const priceInput = document.createElement("input");
+	const stockLabel = document.createElement("label");
+	const stockInput = document.createElement("input");
 
 	filterBox.className = "fillter-box";
-	knapper.className = "filter-buttons";
+	filterControls.className = "filter-controls";
+	priceLabel.htmlFor = "max-product-price";
+	priceLabel.textContent = "Maks. pris";
+	priceInput.id = "max-product-price";
+	priceInput.className = "price-filter-input";
+	priceInput.type = "number";
+	priceInput.min = "0";
+	priceInput.step = "1";
+	priceInput.placeholder = "Ingen grænse";
+	stockLabel.className = "stock-filter";
+	stockInput.type = "checkbox";
+	stockLabel.append(stockInput, "Kun varer på lager");
 	titel.textContent = "Filtrer produkter";
-	tekst.textContent = "Vælg en kategori:";
 
-	filtre.forEach((filter) => {
-		const knap = document.createElement("button");
+	const updateFilters = () => {
+		onFilterChange({
+			maxPrice: priceInput.value,
+			inStockOnly: stockInput.checked,
+		});
+	};
+	priceInput.addEventListener("input", updateFilters);
+	stockInput.addEventListener("change", updateFilters);
+	filterControls.append(priceLabel, priceInput, stockLabel);
 
-		knap.type = "button";
-		knap.textContent = filter;
-
-		knapper.append(knap);
-	});
-
-	filterBox.append(titel, tekst, knapper);
+	filterBox.append(titel, filterControls);
 
 	return filterBox;
 }

@@ -1,4 +1,4 @@
-export function lavProductCard(product) {
+export function lavProductCard(product, onProductClick = () => {}) {
 	const card = document.createElement("article");
 	const image = document.createElement("img");
 	const category = document.createElement("p");
@@ -6,8 +6,10 @@ export function lavProductCard(product) {
 	const description = document.createElement("p");
 	const details = document.createElement("div");
 	const price = document.createElement("p");
+	const detailsButton = document.createElement("button");
 
 	card.className = "product-card";
+	card.addEventListener("click", () => onProductClick(product));
 	image.className = "product-image";
 	image.src = product.thumbnail || product.images?.[0] || "";
 	image.alt = product.title;
@@ -24,9 +26,16 @@ export function lavProductCard(product) {
 		style: "currency",
 		currency: "USD",
 	}).format(product.price);
+	detailsButton.className = "product-details-button";
+	detailsButton.type = "button";
+	detailsButton.textContent = "Se alle oplysninger";
+	detailsButton.addEventListener("click", (event) => {
+		event.stopPropagation();
+		onProductClick(product);
+	});
 
 	details.append(price);
-	card.append(image, category, name, description, details);
+	card.append(image, category, name, description, details, detailsButton);
 
 	return card;
 }
